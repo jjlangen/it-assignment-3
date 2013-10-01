@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Practical 3 Template", "Practical 3 Template\Practical 3 Template.csproj", "{FBDE9CA5-9855-4769-931C-09B2A3431750}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FBDE9CA5-9855-4769-931C-09B2A3431750}.Debug|x86.ActiveCfg = Debug|x86
+		{FBDE9CA5-9855-4769-931C-09B2A3431750}.Debug|x86.Build.0 = Debug|x86
+		{FBDE9CA5-9855-4769-931C-09B2A3431750}.Release|x86.ActiveCfg = Release|x86
+		{FBDE9CA5-9855-4769-931C-09B2A3431750}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using WiimoteLib;
 
 namespace Practical_3_Template
 {
@@ -13,26 +14,30 @@ namespace Practical_3_Template
         const int boardSize = 50;
         const int powerbarWidth = 50;
         const int powerbarHeight = 150;
-        bool holdingButtonB = false;
+        bool isHoldingButtonB = false;
+        bool wasHoldingButtonB = false;
         float x, y;
+
+
 
         public IRTracking()
         {
+            Globals.WiiMote.WiimoteChanged += WiimoteChanged;
         }
 
         public void Update(float dt)
         {
             if (Globals.WiiMote.WiimoteState.ButtonState.B)
             {
-                if (!holdingButtonB)
+                if (!isHoldingButtonB)
                 {
                     x = 1 - Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.X;
                     y = Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.Y;
                 }
-                holdingButtonB = true;
+                isHoldingButtonB = true;
             }
             else
-                holdingButtonB = false;
+                isHoldingButtonB = false;
 
         }
 
@@ -42,6 +47,11 @@ namespace Practical_3_Template
 
             g.Clear(Color.Black);
 
+            // Show how to play info
+            g.DrawString("To play: Aim, hold the B button, move the Wiimote forwards and release the B button", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), Brushes.White, new Point(50, 50));
+
+
+
             paintBoard(g);
 
             g.DrawString("X0: " + Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.X.ToString(), new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), Brushes.White, new Point(50, 50));
@@ -49,11 +59,10 @@ namespace Practical_3_Template
 
 
             // Draw the pointer
-            if (holdingButtonB)
+            if (isHoldingButtonB)
             {
                 g.FillEllipse(Brushes.Yellow, x * Globals.Form.ClientSize.Width - (pointerSize / 2), y * Globals.Form.ClientSize.Height - (pointerSize / 2), pointerSize, pointerSize);
                 g.FillRectangle(Brushes.Green, Globals.Form.ClientSize.Width - powerbarWidth, Globals.Form.ClientSize.Height - calculateDepth() * 100, powerbarWidth, calculateDepth() * 100);
-            
             }
             else
                 g.FillEllipse(Brushes.Blue, (1 - Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.X) * Globals.Form.ClientSize.Width - (pointerSize / 2), Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.Y * Globals.Form.ClientSize.Height - (pointerSize / 2), pointerSize, pointerSize);
@@ -83,5 +92,19 @@ namespace Practical_3_Template
 
             return xSensor1;
         }
+
+        private void throwDart(Graphics g)
+        {
+            
+
+        }
+
+        private void WiimoteChanged(object sender, WiimoteChangedEventArgs e)
+        {
+            B = e.WiimoteState.ButtonState.B;
+
+        }
+
+        public bool B { get; set; }
     }
 }

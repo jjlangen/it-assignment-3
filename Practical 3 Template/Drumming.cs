@@ -14,10 +14,11 @@ namespace Practical_3_Template
 
         PointF circlePosition;
         float xSpeed;
-
+        const int pointerSize = 10;
 
         SoundPlayer drum1, drum2, drum3;
         bool hit = false;
+        Image drumKit = Image.FromFile("drumkit.png", true);
 
         public Drumming()
         {
@@ -71,10 +72,14 @@ namespace Practical_3_Template
         {
             // Create the graphics object so we can draw
             Graphics g = Globals.Graphics;
+            
 
             // Clear the screen
-            g.Clear(Color.CornflowerBlue);
-            g.FillEllipse(Brushes.Red, circlePosition.X, circlePosition.Y, 100, 100);
+            g.Clear(Color.Black);
+            g.DrawImage(drumKit, 0, 0);
+            g.FillEllipse(Brushes.Red, circlePosition.X, circlePosition.Y, 50, 50);
+            g.FillEllipse(Brushes.White, Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.X * Globals.Form.ClientSize.Width - (pointerSize / 2),
+                Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.Y * Globals.Form.ClientSize.Height - (pointerSize / 2), pointerSize, pointerSize);
         }
     }
 }

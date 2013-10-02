@@ -25,6 +25,7 @@ namespace Practical_3_Template
             this.Text = "Practical 2 - Drumming and IR Tracking";
             Globals.state = State.Drumming;
             Globals.Form = this;
+            
         }
 
         // Change State

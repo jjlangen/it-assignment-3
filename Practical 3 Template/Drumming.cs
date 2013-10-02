@@ -10,18 +10,14 @@ namespace Practical_3_Template
 {
     class Drumming
     {
-        int pointerSize = 20;
+        // Declare the global variables
         int selectedKit = 0;
         Image[] drumKit = new Image[5];
-        SoundPlayer[] drumSound = new SoundPlayer[5];
+        SoundPlayer[] drumSound = new SoundPlayer[5] { new SoundPlayer(), new SoundPlayer(), new SoundPlayer(), new SoundPlayer(), new SoundPlayer() };
 
         public Drumming()
         {
-            drumSound[1] = new SoundPlayer();
-            drumSound[2] = new SoundPlayer();
-            drumSound[3] = new SoundPlayer();
-            drumSound[4] = new SoundPlayer();
-
+            // Fill the arrays with references to the sound and image locations
             drumSound[1].SoundLocation = "Sounds/LowTom.wav";
             drumSound[2].SoundLocation = "Sounds/Bass.wav";
             drumSound[3].SoundLocation = "Sounds/Snare.wav";
@@ -36,8 +32,10 @@ namespace Practical_3_Template
 
         public void Update(float dt)
         {
+            // Check if a hitting motion is being performed
             if (Globals.WiiMote.WiimoteState.AccelState.Values.Z > 3)
             {
+                // Check which button is being pressed
                 if (Globals.WiiMote.WiimoteState.ButtonState.A)
                     selectedKit = 1;
                 else if(Globals.WiiMote.WiimoteState.ButtonState.B)
@@ -46,6 +44,8 @@ namespace Practical_3_Template
                     selectedKit = 3;
                 else if (Globals.WiiMote.WiimoteState.ButtonState.Left)
                     selectedKit = 4;
+
+                // Play the corresponding drumkit
                 if(selectedKit != 0)
                     drumSound[selectedKit].Play();
             }

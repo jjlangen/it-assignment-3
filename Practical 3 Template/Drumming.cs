@@ -40,7 +40,7 @@ namespace Practical_3_Template
                     selectedKit = 1;
                 else if(Globals.WiiMote.WiimoteState.ButtonState.B)
                     selectedKit = 2;
-                else if(Globals.WiiMote.WiimoteState.ButtonState.Down)
+                else if(Globals.WiiMote.WiimoteState.ButtonState.Left)
                     selectedKit = 3;
                 else if (Globals.WiiMote.WiimoteState.ButtonState.Right)
                     selectedKit = 4;
@@ -61,7 +61,7 @@ namespace Practical_3_Template
             // Show the drumkit image corresponding to the sound
             g.DrawImage(drumKit[selectedKit], 0, 0);
             // Draw information
-            g.DrawString("To drum: Press A, B, Down or Left and make a drumming motion", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), Brushes.White, new Point(20, 50));
+            g.DrawString("To drum: Press A, B, Left or Right and perform a drumming motion", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), Brushes.White, new Point(20, 50));
 
             // Resets the image
             if (selectedKit != 0)

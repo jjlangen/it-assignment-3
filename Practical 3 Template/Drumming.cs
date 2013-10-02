@@ -10,62 +10,45 @@ namespace Practical_3_Template
 {
     class Drumming
     {
-        // This is just an example, you can empty all the methods
-
-        PointF circlePosition;
-        float xSpeed;
-        const int pointerSize = 10;
-
-        SoundPlayer drum1, drum2, drum3;
-        bool hit = false;
-        Image drumKit = Image.FromFile("drumkit.png", true);
+        int pointerSize = 20;
+        int selectedKit = 0;
+        Image[] drumKit = new Image[5];
+        SoundPlayer[] drumSound = new SoundPlayer[5];
 
         public Drumming()
         {
-            drum1 = new SoundPlayer();
-            drum2 = new SoundPlayer();
-            drum3 = new SoundPlayer();
-            drum1.SoundLocation = "shortsn.WAV";
-            drum2.SoundLocation = "Miami_Conga1.wav";
-            drum3.SoundLocation = "Miami_Rim1.wav";
+            drumSound[1] = new SoundPlayer();
+            drumSound[2] = new SoundPlayer();
+            drumSound[3] = new SoundPlayer();
+            drumSound[4] = new SoundPlayer();
 
+            drumSound[1].SoundLocation = "Sounds/LowTom.wav";
+            drumSound[2].SoundLocation = "Sounds/Bass.wav";
+            drumSound[3].SoundLocation = "Sounds/Snare.wav";
+            drumSound[4].SoundLocation = "Sounds/OpenHiHat.wav";
 
-            circlePosition = new PointF(200, 100);
-            xSpeed = 200;
+            drumKit[0] = Image.FromFile("Images/drumkit0.jpg", true);
+            drumKit[1] = Image.FromFile("Images/drumkit1.jpg", true);
+            drumKit[2] = Image.FromFile("Images/drumkit2.jpg", true);
+            drumKit[3] = Image.FromFile("Images/drumkit3.jpg", true);
+            drumKit[4] = Image.FromFile("Images/drumkit4.jpg", true);
         }
 
-        // Put your update loop here.
         public void Update(float dt)
         {
-            //System.Threading.Thread.Sleep(50);
-            if (Globals.roundValuesX == -1 && Globals.roundValuesY == 0 && hit)
+            if (Globals.WiiMote.WiimoteState.AccelState.Values.Z > 3)
             {
-                drum1.Play();
-                hit = false;
+                if (Globals.WiiMote.WiimoteState.ButtonState.A)
+                    selectedKit = 1;
+                else if(Globals.WiiMote.WiimoteState.ButtonState.B)
+                    selectedKit = 2;
+                else if(Globals.WiiMote.WiimoteState.ButtonState.Down)
+                    selectedKit = 3;
+                else if (Globals.WiiMote.WiimoteState.ButtonState.Left)
+                    selectedKit = 4;
+                if(selectedKit != 0)
+                    drumSound[selectedKit].Play();
             }
-            if (Globals.roundValuesX == 1 && Globals.roundValuesY == 0 && hit)
-            {
-                drum2.Play();
-                hit = false;
-            }
-            if (Globals.roundValuesX == 0 && Globals.roundValuesY == 0 && hit)
-            {
-                drum3.Play();
-                hit = false;
-            }
-            if (Globals.roundValuesX == 0 && Globals.roundValuesY == -1)
-                hit = true;
-            
-
-
-
-
-
-            circlePosition.X += xSpeed * dt;
-
-            // Check for collisions with the walls
-            if (circlePosition.X < 0 || circlePosition.X + 100 > Globals.Form.ClientSize.Width)
-                xSpeed *= -1;
         }
 
         public void Draw(float dt)
@@ -73,13 +56,21 @@ namespace Practical_3_Template
             // Create the graphics object so we can draw
             Graphics g = Globals.Graphics;
             
-
             // Clear the screen
             g.Clear(Color.Black);
-            g.DrawImage(drumKit, 0, 0);
-            g.FillEllipse(Brushes.Red, circlePosition.X, circlePosition.Y, 50, 50);
-            g.FillEllipse(Brushes.White, Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.X * Globals.Form.ClientSize.Width - (pointerSize / 2),
-                Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.Y * Globals.Form.ClientSize.Height - (pointerSize / 2), pointerSize, pointerSize);
+            // Show the drumkit image corresponding to the sound
+            g.DrawImage(drumKit[selectedKit], 0, 0);
+            // Draw information
+            g.DrawString("To drum: Press A, B, Down or Left and make a drumming motion", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), Brushes.White, new Point(20, 50));
+
+            // Resets the image
+            if (selectedKit != 0)
+                selectedKit = 0;
         }
     }
 }
+
+// g.FillEllipse(Brushes.White, (1 - Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.X) * Globals.Form.ClientSize.Width - (pointerSize / 2), Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.Y * Globals.Form.ClientSize.Height - (pointerSize / 2), pointerSize, pointerSize);
+//g.DrawString("IRSensor X: " + (1 - Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.X).ToString(), new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), Brushes.White, new Point(50, 50));
+//g.DrawString("IRSensor Y: " + Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.Y.ToString(), new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), Brushes.White, new Point(50, 65));
+//g.DrawString("Accel Z: " + Globals.WiiMote.WiimoteState.AccelState.Values.Z.ToString(), new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), Brushes.White, new Point(50, 80));

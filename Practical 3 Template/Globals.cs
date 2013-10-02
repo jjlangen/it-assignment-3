@@ -18,6 +18,8 @@ namespace Practical_3_Template
         public static Drumming Drumming;
         public static IRTracking IRTracking;
         public static Graphics Graphics;
+        public static double roundValuesX;
+        public static double roundValuesY;
     }
     // A State Enum to define different States
     public enum State

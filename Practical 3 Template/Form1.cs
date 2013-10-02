@@ -25,7 +25,7 @@ namespace Practical_3_Template
             this.Text = "Practical 2 - Drumming and IR Tracking";
             Globals.state = State.Drumming;
             Globals.Form = this;
-        }	
+        }
 
         // Change State
         private void btnChange_Click(object sender, EventArgs e)
@@ -47,6 +47,13 @@ namespace Practical_3_Template
             // Calculates the time difference between the last frame and the current frame
             CalculateDT();
 
+            // Print the values on the labels
+            labelIRValues.Text = Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Found.ToString();
+            Globals.roundValuesX = Math.Round(Globals.WiiMote.WiimoteState.AccelState.Values.X);
+            labelAcc.Text = Globals.roundValuesX.ToString();
+            Globals.roundValuesY = Math.Round(Globals.WiiMote.WiimoteState.AccelState.Values.Y);
+            labelAcc2.Text = Globals.roundValuesY.ToString();
+
             switch (Globals.state)
             {
                 case State.Drumming:
@@ -57,10 +64,9 @@ namespace Practical_3_Template
                     Globals.IRTracking.Update(dt);
                     Globals.IRTracking.Draw(dt);
                     break;
-            }
-
+            }            
             // Renders the screen
             graphics.Render(Graphics.FromHwnd(this.Handle));
         }
-   }
+    }
 }

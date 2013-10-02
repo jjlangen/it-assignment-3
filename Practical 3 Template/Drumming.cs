@@ -42,7 +42,7 @@ namespace Practical_3_Template
                     selectedKit = 2;
                 else if(Globals.WiiMote.WiimoteState.ButtonState.Down)
                     selectedKit = 3;
-                else if (Globals.WiiMote.WiimoteState.ButtonState.Left)
+                else if (Globals.WiiMote.WiimoteState.ButtonState.Right)
                     selectedKit = 4;
 
                 // Play the corresponding drumkit

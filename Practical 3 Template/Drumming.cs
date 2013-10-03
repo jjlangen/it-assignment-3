@@ -18,10 +18,10 @@ namespace Practical_3_Template
         public Drumming()
         {
             // Fill the arrays with references to the sound and image locations
-            drumSound[1].SoundLocation = "Sounds/OpenHiHat.wav";
+            drumSound[1].SoundLocation = "Sounds/HiHat.wav";
             drumSound[2].SoundLocation = "Sounds/LowTom.wav";
             drumSound[3].SoundLocation = "Sounds/Snare.wav";
-            drumSound[4].SoundLocation = "Sounds/Snare.wav";
+            drumSound[4].SoundLocation = "Sounds/Ride.wav";
             drumSound[5].SoundLocation = "Sounds/Bass.wav";
             drumSound[6].SoundLocation = "Sounds/OpenHiHat.wav";
             

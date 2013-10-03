@@ -82,7 +82,7 @@ namespace Practical_3_Template
 
             // Show how to play info
             g.DrawString("To play: Hold the Wiimote like a dart arrow. Aim at the center and hold the A button.\nMove the Wiimote forward and release the A button.\nFirst move 1 meter away from your sensorbar.\nThe distance should show " + cheatdist + " (mm).\nDont cheat!", fontType, Brushes.White, new System.Drawing.Point(20, 50));
-            g.DrawString("Score: " + totalscore, fontType, Brushes.White, new System.Drawing.Point(20, 150));
+            g.DrawString("Score: " + totalscore, fontType, Brushes.White, new System.Drawing.Point(20, 200));
 
             // Draw the board, thrown darts and pointer
             paintBoard(g);
@@ -107,9 +107,9 @@ namespace Practical_3_Template
 
             // Distance calculation and information
             distanceToSensor = (estDistanceToSBar * SBarWidth) / distanceToCenter((xSensor1 - xSensor0), (ySensor1 - ySensor0));
-            g.DrawString("Distance: " + Math.Round(distanceToSensor).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 330));
-            g.DrawString("Threshold: " + cheatdist.ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 350));
-            g.DrawString("(use button 1 and 2 \nto manipulate the threshold)", fontType, Brushes.White, new System.Drawing.Point(20, 370));
+            g.DrawString("Distance: " + Math.Round(distanceToSensor).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 220));
+            g.DrawString("Threshold: " + cheatdist.ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 240));
+            g.DrawString("(use button 1 and 2 \nto manipulate the threshold)", fontType, Brushes.White, new System.Drawing.Point(20, 260));
         }
 
         // Draw the gameboard

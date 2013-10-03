@@ -20,6 +20,7 @@ namespace Practical_3_Template
         public static Graphics Graphics;
         public static double roundValuesX;
         public static double roundValuesY;
+        public static int centerX, centerY;
     }
     // A State Enum to define different States
     public enum State

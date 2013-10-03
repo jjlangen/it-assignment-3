@@ -10,29 +10,35 @@ namespace Practical_3_Template
 {
     class IRTracking
     {
+        #region Variables
         const int pointerSize = 10;
         const int boardSize = 50;
         const int powerbarWidth = 50;
         const int powerbarHeight = 150;
 
+        const int estDistanceToSBar = 10;
+        const int SBarWidth = 5;
+
         bool isHoldingButtonA = false;
-        bool wasHoldingButtonA = false;
-        bool buttonA;
+        bool cheat = false;
+        bool thrown = false;
 
         float x, y, xSensor0, xSensor1, ySensor0, ySensor1;
 
         int dartsThrown = 0;
         int totalscore = 0;
-        int centerX = 5; //Globals.Form.ClientSize.Width / 2;
-        int centerY = 5; //Globals.Form.ClientSize.Height / 2;
-        System.Drawing.Point[] dart = new System.Drawing.Point[20];
+        double distanceToSensor;
+        
+        //System.Drawing.Point[] dart = new System.Drawing.Point[20];
+        List<System.Drawing.Point> dart = new List<System.Drawing.Point>();
 
         Font fontType = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular);
-
+        Graphics g;
+        #endregion
 
         public IRTracking()
         {
-            Globals.WiiMote.WiimoteChanged += WiimoteChanged;
+            //Globals.WiiMote.WiimoteChanged += WiimoteChanged;
         }
 
         public void Update(float dt)
@@ -43,31 +49,40 @@ namespace Practical_3_Template
                 {
                     x = 1 - Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.X;
                     y = Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.Y;
+                    isHoldingButtonA = true;
                 }
 
-                isHoldingButtonA = true;
-
-                if (Globals.WiiMote.WiimoteState.AccelState.Values.Z > 1.5)
+                if (distanceToSensor < 1000 && distanceToSensor > 800 && !thrown)//Math.Round(Globals.WiiMote.WiimoteState.AccelState.Values.Z, 1) > 1.5)
                 {
                     ThrowDart();
                 }
+                if (distanceToSensor < 800)
+                {
+                    if (!cheat && isHoldingButtonA)
+                    {
+                        cheat = true;
+                        if (MessageBox.Show("Dont cheat! Haven't you read the rules??", "Cheater!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation) == DialogResult.OK)
+                            cheat = false;
+                    }
+                }
             }
             else
+            {
                 isHoldingButtonA = false;
-
+                thrown = false;
+            }
         }
 
         public void Draw(float dt)
         {
-            Graphics g = Globals.Graphics;
-
+            g = Globals.Graphics;
             g.Clear(Color.Black);
 
             // Youri: g.DrawImage(Image.FromFile(@"Wall.jpg", true), 0, 0);
 
             // Show how to play info
-            g.DrawString("To play: Hold the Wiimote like a dart arrow. Aim at the center and hold the A button. Now move the Wiimote forward and release the A button.", fontType, Brushes.White, new System.Drawing.Point(20, 50));
-            g.DrawString("Score: " + totalscore, fontType, Brushes.White, new System.Drawing.Point(20, 65));
+            g.DrawString("To play: Hold the Wiimote like a dart arrow. Aim at the center and hold the A button.\nMove the Wiimote forward and release the A button.\nFirst move 1 meter away from your sensorbar.\nThe distance should show 1000 (mm).\nDont cheat!", fontType, Brushes.White, new System.Drawing.Point(20, 50));
+            g.DrawString("Score: " + totalscore, fontType, Brushes.White, new System.Drawing.Point(20, 150));
 
             // Draw the board, thrown darts and pointer
             paintBoard(g);
@@ -79,13 +94,16 @@ namespace Practical_3_Template
             xSensor1 = Globals.WiiMote.WiimoteState.IRState.IRSensors[1].Position.X;
             ySensor0 = Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.Y;
             ySensor1 = Globals.WiiMote.WiimoteState.IRState.IRSensors[1].Position.Y;
-            g.DrawString("X0: " + Math.Round(xSensor0, 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 150));
-            g.DrawString("X1: " + Math.Round(xSensor1, 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 165));
-            g.DrawString("Y0: " + Math.Round(ySensor0, 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 180));
-            g.DrawString("Y1: " + Math.Round(ySensor1, 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 195));
-            g.DrawString("Size: " + Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Size.ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 210));
-            g.DrawString("Diff X1-X0: " + Math.Round((xSensor1 - xSensor0), 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 225));
-            g.DrawString("Diff Y1-Y0: " + Math.Round((ySensor1 - ySensor0), 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 240));
+            g.DrawString("X0: " + Math.Round(xSensor0, 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 210));
+            g.DrawString("X1: " + Math.Round(xSensor1, 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 235));
+            g.DrawString("Y0: " + Math.Round(ySensor0, 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 250));
+            g.DrawString("Y1: " + Math.Round(ySensor1, 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 265));
+            g.DrawString("Size: " + Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Size.ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 280));
+            g.DrawString("Diff X1-X0: " + Math.Round((xSensor1 - xSensor0), 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 295));
+            g.DrawString("Diff Y1-Y0: " + Math.Round((ySensor1 - ySensor0), 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 310));
+
+            distanceToSensor = (estDistanceToSBar * SBarWidth) / distanceToCenter((xSensor1 - xSensor0), (ySensor1 - ySensor0));
+            g.DrawString("Distance: " + Math.Round(distanceToSensor).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 350));
         }
 
         // Draw the gameboard
@@ -131,20 +149,20 @@ namespace Practical_3_Template
 
         public void ThrowDart()
         {
-            int dartx = (int)x * Globals.Form.ClientSize.Width - pointerSize;
-            int darty = (int)y * Globals.Form.ClientSize.Height - pointerSize;
+            int dartx = (int)(x * Globals.Form.ClientSize.Width - pointerSize / 2);
+            int darty = (int)(y * Globals.Form.ClientSize.Height - pointerSize / 2);
 
-            dart[dartsThrown] = new System.Drawing.Point(dartx, darty);
+            dart.Add(new System.Drawing.Point(dartx, darty));
             dartsThrown++;
-
             updateScore(dartx, darty);
+            thrown = true;
         }
 
         public void updateScore(int dartx, int darty)
         {
-            double distance = distanceToCenter(Math.Abs(dartx - centerX), Math.Abs(darty - centerY));
+            double distance = distanceToCenter(Math.Abs((dartx + pointerSize) - Globals.centerX), Math.Abs((darty + pointerSize) - Globals.centerY));
 
-            int score = 10 - (int)distance / boardSize;
+            int score = 10 - (int)(distance / (boardSize * 0.5));
             if (score < 0)
                 score = 0;
 
@@ -156,30 +174,5 @@ namespace Practical_3_Template
         {
             return Math.Sqrt(x * x + y * y);
         }
-
-        /*
-        
-        // Calculate the distance to the sensorbar
-        private static float calculateDepth()
-        {
-            float xSensor0, xSensor1, ySensor0, ySensor1;
-
-            xSensor0 = Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.X;
-            ySensor0 = Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.Y;
-            xSensor1 = Globals.WiiMote.WiimoteState.IRState.IRSensors[1].Position.X;
-            ySensor1 = Globals.WiiMote.WiimoteState.IRState.IRSensors[1].Position.Y;
-
-            return xSensor1;
-        }
-         
-         */
-
-        private void WiimoteChanged(object sender, WiimoteChangedEventArgs e)
-        {
-            A = e.WiimoteState.ButtonState.A;
-
-        }
-
-        public bool A { set { buttonA = value; } }
     }
 }

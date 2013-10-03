@@ -25,6 +25,8 @@ namespace Practical_3_Template
             this.Text = "Practical 2 - Drumming and IR Tracking";
             Globals.state = State.Drumming;
             Globals.Form = this;
+            Globals.centerX = Globals.Form.ClientSize.Width / 2;
+            Globals.centerY = Globals.Form.ClientSize.Height / 2;
             
         }
 

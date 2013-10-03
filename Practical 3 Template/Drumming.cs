@@ -18,10 +18,10 @@ namespace Practical_3_Template
         public Drumming()
         {
             // Fill the arrays with references to the sound and image locations
-            drumSound[1].SoundLocation = "Sounds/Crash.wav";
+            drumSound[1].SoundLocation = "Sounds/HiHat.wav";
             drumSound[2].SoundLocation = "Sounds/LowTom.wav";
             drumSound[3].SoundLocation = "Sounds/Snare.wav";
-            drumSound[4].SoundLocation = "Sounds/MidTom.wav";
+            drumSound[4].SoundLocation = "Sounds/Ride.wav";
             drumSound[5].SoundLocation = "Sounds/Bass.wav";
             drumSound[6].SoundLocation = "Sounds/OpenHiHat.wav";
             
@@ -38,7 +38,7 @@ namespace Practical_3_Template
         public void Update(float dt)
         {
             // Check if a hitting motion is being performed
-            if (Math.Round(Globals.WiiMote.WiimoteState.AccelState.Values.Z) > 2)
+            if (Math.Round(Globals.WiiMote.WiimoteState.AccelState.Values.Z) > 1)
             {
                 // Check which button is being pressed
                 if (Globals.WiiMote.WiimoteState.ButtonState.Left)
@@ -70,7 +70,7 @@ namespace Practical_3_Template
             // Show the drumkit image corresponding to the sound
             g.DrawImage(drumKit[selectedKit], 0, 0);
             // Draw information
-            g.DrawString("To drum: Press A, B, Left or Right and perform a drumming motion", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), Brushes.White, new Point(20, 50));
+            g.DrawString("To drum: Press A, B, Left, Right, Top or Bottom and perform a drumming motion", new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular), Brushes.White, new Point(20, 50));
 
             // Resets the image
             if (selectedKit != 0)

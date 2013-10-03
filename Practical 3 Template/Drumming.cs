@@ -31,7 +31,7 @@ namespace Practical_3_Template
             drumKit[2] = Image.FromFile("Images/drumkit2.jpg", true);
             drumKit[3] = Image.FromFile("Images/drumkit3.jpg", true);
             drumKit[4] = Image.FromFile("Images/drumkit4.jpg", true);
-            drumKit[3] = Image.FromFile("Images/drumkit5.jpg", true);
+            drumKit[5] = Image.FromFile("Images/drumkit5.jpg", true);
             drumKit[4] = Image.FromFile("Images/drumkit6.jpg", true);
         }
 

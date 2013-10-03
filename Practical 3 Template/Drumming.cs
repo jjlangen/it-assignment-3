@@ -18,16 +18,21 @@ namespace Practical_3_Template
         public Drumming()
         {
             // Fill the arrays with references to the sound and image locations
-            drumSound[1].SoundLocation = "Sounds/LowTom.wav";
-            drumSound[2].SoundLocation = "Sounds/Bass.wav";
+            drumSound[1].SoundLocation = "Sounds/OpenHiHat.wav";
+            drumSound[2].SoundLocation = "Sounds/LowTom.wav";
             drumSound[3].SoundLocation = "Sounds/Snare.wav";
-            drumSound[4].SoundLocation = "Sounds/OpenHiHat.wav";
+            drumSound[4].SoundLocation = "Sounds/Snare.wav";
+            drumSound[5].SoundLocation = "Sounds/Bass.wav";
+            drumSound[6].SoundLocation = "Sounds/OpenHiHat.wav";
+            
 
             drumKit[0] = Image.FromFile("Images/drumkit0.jpg", true);
             drumKit[1] = Image.FromFile("Images/drumkit1.jpg", true);
             drumKit[2] = Image.FromFile("Images/drumkit2.jpg", true);
             drumKit[3] = Image.FromFile("Images/drumkit3.jpg", true);
             drumKit[4] = Image.FromFile("Images/drumkit4.jpg", true);
+            drumKit[3] = Image.FromFile("Images/drumkit5.jpg", true);
+            drumKit[4] = Image.FromFile("Images/drumkit6.jpg", true);
         }
 
         public void Update(float dt)
@@ -36,14 +41,18 @@ namespace Practical_3_Template
             if (Math.Round(Globals.WiiMote.WiimoteState.AccelState.Values.Z) > 1)
             {
                 // Check which button is being pressed
-                if (Globals.WiiMote.WiimoteState.ButtonState.A)
+                if (Globals.WiiMote.WiimoteState.ButtonState.Left)
                     selectedKit = 1;
-                else if(Globals.WiiMote.WiimoteState.ButtonState.B)
+                if (Globals.WiiMote.WiimoteState.ButtonState.A)
                     selectedKit = 2;
-                else if(Globals.WiiMote.WiimoteState.ButtonState.Left)
+                else if(Globals.WiiMote.WiimoteState.ButtonState.Up)
                     selectedKit = 3;
-                else if (Globals.WiiMote.WiimoteState.ButtonState.Right)
+                else if (Globals.WiiMote.WiimoteState.ButtonState.Down)
                     selectedKit = 4;
+                else if (Globals.WiiMote.WiimoteState.ButtonState.B)
+                    selectedKit = 5;
+                else if (Globals.WiiMote.WiimoteState.ButtonState.Right)
+                    selectedKit = 6;
 
                 // Play the corresponding drumkit
                 if(selectedKit != 0)

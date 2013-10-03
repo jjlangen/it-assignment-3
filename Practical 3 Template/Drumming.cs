@@ -32,7 +32,7 @@ namespace Practical_3_Template
             drumKit[3] = Image.FromFile("Images/drumkit3.jpg", true);
             drumKit[4] = Image.FromFile("Images/drumkit4.jpg", true);
             drumKit[5] = Image.FromFile("Images/drumkit5.jpg", true);
-            drumKit[4] = Image.FromFile("Images/drumkit6.jpg", true);
+            drumKit[6] = Image.FromFile("Images/drumkit6.jpg", true);
         }
 
         public void Update(float dt)

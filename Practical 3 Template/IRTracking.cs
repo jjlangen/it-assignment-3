@@ -23,8 +23,8 @@ namespace Practical_3_Template
 
         int dartsThrown = 0;
         int totalscore = 0;
-        int centerX = Globals.Form.ClientSize.Width / 2;
-        int centerY = Globals.Form.ClientSize.Height / 2;
+        int centerX = 5; //Globals.Form.ClientSize.Width / 2;
+        int centerY = 5; //Globals.Form.ClientSize.Height / 2;
         System.Drawing.Point[] dart = new System.Drawing.Point[20];
 
         Font fontType = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular);

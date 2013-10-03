@@ -33,7 +33,7 @@ namespace Practical_3_Template
         public void Update(float dt)
         {
             // Check if a hitting motion is being performed
-            if (Globals.WiiMote.WiimoteState.AccelState.Values.Z > 3)
+            if (Math.Round(Globals.WiiMote.WiimoteState.AccelState.Values.Z) > 1)
             {
                 // Check which button is being pressed
                 if (Globals.WiiMote.WiimoteState.ButtonState.A)

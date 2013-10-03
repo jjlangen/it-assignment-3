@@ -12,8 +12,8 @@ namespace Practical_3_Template
     {
         // Declare the global variables
         int selectedKit = 0;
-        Image[] drumKit = new Image[5];
-        SoundPlayer[] drumSound = new SoundPlayer[5] { new SoundPlayer(), new SoundPlayer(), new SoundPlayer(), new SoundPlayer(), new SoundPlayer() };
+        Image[] drumKit = new Image[7];
+        SoundPlayer[] drumSound = new SoundPlayer[6] { new SoundPlayer(), new SoundPlayer(), new SoundPlayer(), new SoundPlayer(), new SoundPlayer() };
 
         public Drumming()
         {

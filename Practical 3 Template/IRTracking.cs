@@ -28,8 +28,8 @@ namespace Practical_3_Template
         int dartsThrown = 0;
         int totalscore = 0;
         double distanceToSensor;
+        int cheatdist = 1000;
         
-        //System.Drawing.Point[] dart = new System.Drawing.Point[20];
         List<System.Drawing.Point> dart = new List<System.Drawing.Point>();
 
         Font fontType = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Regular);
@@ -38,7 +38,6 @@ namespace Practical_3_Template
 
         public IRTracking()
         {
-            //Globals.WiiMote.WiimoteChanged += WiimoteChanged;
         }
 
         public void Update(float dt)
@@ -52,11 +51,9 @@ namespace Practical_3_Template
                     isHoldingButtonA = true;
                 }
 
-                if (distanceToSensor < 1000 && distanceToSensor > 800 && !thrown)//Math.Round(Globals.WiiMote.WiimoteState.AccelState.Values.Z, 1) > 1.5)
-                {
+                if (distanceToSensor < (cheatdist + 200) && distanceToSensor > (cheatdist - 200) && !thrown)
                     ThrowDart();
-                }
-                if (distanceToSensor < 800)
+                if (distanceToSensor > (cheatdist + 200) || distanceToSensor < (cheatdist - 200) )
                 {
                     if (!cheat && isHoldingButtonA)
                     {
@@ -71,6 +68,11 @@ namespace Practical_3_Template
                 isHoldingButtonA = false;
                 thrown = false;
             }
+
+            if (Globals.WiiMote.WiimoteState.ButtonState.One)
+                cheatdist += 5;
+            if (Globals.WiiMote.WiimoteState.ButtonState.Two)
+                cheatdist -= 5;
         }
 
         public void Draw(float dt)
@@ -78,22 +80,22 @@ namespace Practical_3_Template
             g = Globals.Graphics;
             g.Clear(Color.Black);
 
-            // Youri: g.DrawImage(Image.FromFile(@"Wall.jpg", true), 0, 0);
-
             // Show how to play info
-            g.DrawString("To play: Hold the Wiimote like a dart arrow. Aim at the center and hold the A button.\nMove the Wiimote forward and release the A button.\nFirst move 1 meter away from your sensorbar.\nThe distance should show 1000 (mm).\nDont cheat!", fontType, Brushes.White, new System.Drawing.Point(20, 50));
+            g.DrawString("To play: Hold the Wiimote like a dart arrow. Aim at the center and hold the A button.\nMove the Wiimote forward and release the A button.\nFirst move 1 meter away from your sensorbar.\nThe distance should show " + cheatdist + " (mm).\nDont cheat!", fontType, Brushes.White, new System.Drawing.Point(20, 50));
             g.DrawString("Score: " + totalscore, fontType, Brushes.White, new System.Drawing.Point(20, 150));
 
             // Draw the board, thrown darts and pointer
             paintBoard(g);
             paintDarts(g);
             paintPointer(g);
-
-            // Draw the debug stuff
+            
             xSensor0 = Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.X;
             xSensor1 = Globals.WiiMote.WiimoteState.IRState.IRSensors[1].Position.X;
             ySensor0 = Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Position.Y;
             ySensor1 = Globals.WiiMote.WiimoteState.IRState.IRSensors[1].Position.Y;
+
+            // Draw debug values
+            /*
             g.DrawString("X0: " + Math.Round(xSensor0, 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 210));
             g.DrawString("X1: " + Math.Round(xSensor1, 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 235));
             g.DrawString("Y0: " + Math.Round(ySensor0, 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 250));
@@ -101,9 +103,13 @@ namespace Practical_3_Template
             g.DrawString("Size: " + Globals.WiiMote.WiimoteState.IRState.IRSensors[0].Size.ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 280));
             g.DrawString("Diff X1-X0: " + Math.Round((xSensor1 - xSensor0), 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 295));
             g.DrawString("Diff Y1-Y0: " + Math.Round((ySensor1 - ySensor0), 3).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 310));
+            */
 
+            // Distance calculation and information
             distanceToSensor = (estDistanceToSBar * SBarWidth) / distanceToCenter((xSensor1 - xSensor0), (ySensor1 - ySensor0));
-            g.DrawString("Distance: " + Math.Round(distanceToSensor).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 350));
+            g.DrawString("Distance: " + Math.Round(distanceToSensor).ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 330));
+            g.DrawString("Threshold: " + cheatdist.ToString(), fontType, Brushes.White, new System.Drawing.Point(20, 350));
+            g.DrawString("(use button 1 and 2 \nto manipulate the threshold)", fontType, Brushes.White, new System.Drawing.Point(20, 370));
         }
 
         // Draw the gameboard
